@@ -88,7 +88,7 @@ TEST (Sort, sortByIncreasingCompactness) {
 	Circle cir0(0, 0, 3);
 	Circle cir4(0, 0, 2);
 	std::list<Shape*> testList5;
-	//
+	
 	testList5.push_back(&cir0);
 	testList5.push_back(&cir1);
 	testList5.push_back(&cir2);
