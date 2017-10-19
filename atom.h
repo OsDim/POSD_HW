@@ -2,41 +2,43 @@
 #define ATOM_H
 
 #include <string>
-
+#include "term.h"
 using std::string;
 
-class Atom {
+
+class Atom : public Term{
+
 public:
-  Atom (string s):_symbol(s), _value(s) {}
+	Atom (string s):_symbol(s), _value(s) {}
 
-  string symbol() {
-	  return _symbol; 
-  }
+	string symbol() const{
+		return _symbol;
+	}
 
-  string value() {
-	  return _value;
-  }
+	string value() const {
+		return _value;
+	}
 
-  string className() {
-	  return _className;
-  }
+	string className() const {
+		return _className;
+	}
 
-  template <class T>
-  bool match(T &atom) {
-	  if (atom.className() == "variable") {
-		  return atom.match(*this);
-	  }
-	  else {
-		  return _value == atom.value();
-	  }
-  }
-  //bool operator ==(Atom a) {return _symbol == a._symbol;}
-
+	template <class T>
+	bool match(T &term) {
+		if (term.className() == "variable") {
+			return term.match(*this);
+		}
+		else {
+			return	_value == term.value();
+		}
+	}
 
 private:
 	string _symbol;
 	string _value;
 	string _className = "atom";
+
 };
+
 
 #endif

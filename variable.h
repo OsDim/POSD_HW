@@ -2,37 +2,109 @@
 #define VARIABLE_H
 
 #include <string>
-#include "atom.h"
+#include <iostream>
+#include "term.h"
 using std::string;
+using std::cout;
 
-class Variable{
+class Variable:public Term{
+
 public:
-  Variable(string s):_symbol(s){}
-  string const _symbol;
-  string value(){ return _value; }
 
-  string className() {
-	  return _className;
-  }
+	Variable(string s):_symbol(s), _value(s){}
 
-  template <class T>
-  bool match( T &atom ){
-    bool ret = _assignable;
-    if(_assignable){
-      _value = atom.symbol() ;
-      _assignable = false;
-	  return ret;
-	}
-	else {
-		return _value == atom.value();
+	string symbol() const { 
+		return _symbol; 
 	}
 
-  }
+	string value() const {
+		if (_nbMatched) {
+			return _matchNb->symbol();
+		}
+		else {
+			if (_varMatched) {
+				return _aVar->value();
+			}
+		}
+		return _value; 
+	}
+
+	string className() const {
+		return _className;
+	}
+	/*
+	bool nbMatched() {
+		return _nbMatched;
+	}*/
+
+	bool match(Term &term) {
+		bool ret = _assignable;
+		if (_assignable) {
+
+			if (term.className() == "number") {			
+				if (!_nbMatched) {
+					_matchNb = &term;
+					if (_symbol == term.symbol()) {
+						return true;
+					}
+					if (_varMatched) {
+						if (_symbol != _aVar->symbol()) {//avoid loopcycle
+							_aVar->match(term);
+						}
+					}
+					_nbMatched = true;
+					return true;
+				}
+				else {
+					return 	_matchNb->match(term);
+				}
+			}
+
+			if (term.className() == "variable"|| term.className() == "struct") {
+				if (_varMatched) {
+					_aVar->match(term);
+					return true;
+				}else{
+					_aVar = &term;
+					_value = term.symbol();
+					if (_nbMatched) {
+						term.match(*_matchNb);
+					}
+					_varMatched = true;
+					return _varMatched;
+				}
+			}
+
+
+			if (term.className() == "atom") {
+				if (!_atomAssing) {
+					if (_varMatched) {
+						_aVar->match(term);
+					}
+					_value = term.symbol();
+					_atomAssing = true;
+					_varMatched = false;
+				}
+				else {
+					return false;
+				}
+			}
+
+		}
+		_assignable = false;
+		return ret;
+	}
 
 private:
-  string _value;
-  string _className = "variable";
-  bool _assignable = true;
+	string _symbol;
+	string _value;
+	string _className = "variable";
+	bool _assignable = true;
+	bool _nbMatched = false;
+	bool _varMatched = false;
+	bool _atomAssing = false;
+	Term * _matchNb;
+	Term * _aVar;
 };
 
 #endif

@@ -1,13 +1,13 @@
-all: hw3 #madRace utAtom
+all: hw2 #madRace utAtom
 
-hw3: main.o
+hw2: main.o
 ifeq (${OS}, Windows_NT)
-	g++ -o hw3 main.o -lgtest
+	g++ -o hw2 main.o -lgtest
 else
-	g++ -o hw3 main.o -lgtest -pthread
+	g++ -o hw2 main.o -lgtest -pthread
 endif
 
-main.o: main.cpp atom.h variable.h number.h struct.h utVariable.h utStruct.h term.h
+main.o: main.cpp atom.h variable.h number.h utTerm.h
 	g++ --std=gnu++0x -c main.cpp
 
 utAtom: mainAtom.o
