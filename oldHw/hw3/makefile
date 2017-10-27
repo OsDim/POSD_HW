@@ -1,18 +1,13 @@
-all: hw4 #madRace #utAtom #utVariable #utScanner
+all: hw3 #madRace utAtom
 
-hw4: main.o  
+hw3: main.o
 ifeq (${OS}, Windows_NT)
-	g++ -o hw4 main.o -lgtest
+	g++ -o hw3 main.o -lgtest
 else
-	g++ -o hw4 main.o -lgtest -pthread
+	g++ -o hw3 main.o -lgtest -pthread
 endif
 
-#exp: mainExp.o
-#	g++ -o exp mainExp.o -lgtest -lpthread
-#mainExp.o: mainExp.cpp exp.h global.h
-#	g++ -std=c++11 -c mainExp.cpp
-
-main.o: main.cpp atom.h variable.h number.h term.h struct.h utVariable.h utStruct.h utList.h list.h
+main.o: main.cpp atom.h variable.h number.h struct.h utVariable.h utStruct.h term.h
 	g++ --std=gnu++0x -c main.cpp
 
 utAtom: mainAtom.o
@@ -21,6 +16,7 @@ ifeq (${OS}, Windows_NT)
 else
 	g++ -o utAtom mainAtom.o -lgtest -pthread
 endif
+
 mainAtom.o: mainAtom.cpp utAtom.h atom.h
 	g++ --std=gnu++0x -c mainAtom.cpp
 
@@ -30,8 +26,19 @@ ifeq (${OS}, Windows_NT)
 else
 	g++ -o utVariable mainVariable.o -lgtest -pthread
 endif	
+
 mainVariable.o: mainVariable.cpp utVariable.h variable.h
 		g++ --std=gnu++0x -c mainVariable.cpp
+
+#exp: mainExp.o
+#	g++ -o exp mainExp.o -lgtest -lpthread
+#mainExp.o: mainExp.cpp exp.h global.h
+#	g++ -std=c++11 -c mainExp.cpp
+
+#utScannerParser: mainScannerParser.o term.o struct.o var.o list.o
+#	g++ -o utScannerParser mainScannerParser.o term.o var.o struct.o list.o -lgtest -lpthread
+#mainScannerParser.o: mainScannerParser.cpp utScanner.h utParser.h scanner.h parser.h term.h var.h struct.h list.h global.h node.h
+#		g++ -std=c++11 -c mainScannerParser.cpp
 
 #utTerm: mainTerm.o term.o struct.o var.o list.o
 #	g++ -o utTerm mainTerm.o term.o var.o struct.o list.o -lgtest -lpthread
@@ -46,6 +53,6 @@ mainVariable.o: mainVariable.cpp utVariable.h variable.h
 #list.o: list.h list.cpp term.h var.h
 #	g++ -std=c++11 -c list.cpp
 clean:
-	rm -f *.o hw4
+	rm -f *.o madRace utAtom
 stat:
 	wc *.h *.cpp

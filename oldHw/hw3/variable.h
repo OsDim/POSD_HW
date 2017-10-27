@@ -20,13 +20,11 @@ public:
 	string value() const {
 		if (_nbMatched) {
 			return _matchNb->symbol();
-		} else {
+		}
+		else {
 			if (_varMatched) {
 				return _aVar->value();
 			}
-		}
-		if (_listAssing) {
-			return _list->symbol();
 		}
 		return _value; 
 	}
@@ -84,7 +82,6 @@ public:
 						_aVar->match(term);
 					}
 					_value = term.symbol();
-					_symbol = _value;
 					_atomAssing = true;
 					_varMatched = false;
 				}
@@ -92,17 +89,7 @@ public:
 					return false;
 				}
 			}
-			
-			if (term.className() == "List") {
-				if (!_listAssing) {
-					_list = &term;
-					_listAssing = true;
-					//_value = term.symbol();
-					_value = _list -> symbol();
-					return true;
-				}
-				return false;
-			}
+
 		}
 		_assignable = false;
 		return ret;
@@ -116,10 +103,8 @@ private:
 	bool _nbMatched = false;
 	bool _varMatched = false;
 	bool _atomAssing = false;
-	bool _listAssing = false;
 	Term * _matchNb;
 	Term * _aVar;
-	Term * _list;
 };
 
 #endif
