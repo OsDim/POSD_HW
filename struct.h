@@ -9,7 +9,7 @@
 using std::string;
 
 class Struct:public Term
-{
+{ 
 public:
   Struct(Atom const & name, std::vector<Term *> args):_name(name), _args(args) {
   }
