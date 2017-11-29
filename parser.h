@@ -47,6 +47,7 @@ public:
     int startIndexOfStructArgs = _terms.size();
     _scanner.nextToken();
     createTerms();
+	
     if(_currentToken == ')')
     {
       vector<Term *> args(_terms.begin() + startIndexOfStructArgs, _terms.end());
