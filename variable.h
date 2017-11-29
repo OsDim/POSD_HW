@@ -2,124 +2,29 @@
 #define VARIABLE_H
 
 #include <string>
-#include <iostream>
-#include "term.h"
+#include "atom.h"
 using std::string;
-using std::cout;
 
-class Variable:public Term{
-
+class Variable : public Term {
 public:
-
-	Variable(string s):_symbol(s), _value(s){}
-
-	string symbol() const { 
-		return _symbol; 
-	}
-
-	string value() const {
-		if (_nbMatched) {
-			return _matchNb->symbol();
-		} else {
-			if (_varMatched) {
-				return _aVar->value();
-			}
-		}
-		if (_listAssing) {
-			return _list->symbol();
-		}
-		return _value; 
-	}
-
-	string className() const {
-		return _className;
-	}
-	/*
-	bool nbMatched() {
-		return _nbMatched;
-	}*/
-
-	bool match(Term &term) {
-		bool ret = _assignable;
-		if (_assignable) {
-
-			if (term.className() == "number") {			
-				if (!_nbMatched) {
-					_matchNb = &term;
-					if (_symbol == term.symbol()) {
-						return true;
-					}
-					if (_varMatched) {
-						if (_symbol != _aVar->symbol()) {//avoid loopcycle
-							_aVar->match(term);
-						}
-					}
-					_nbMatched = true;
-					return true;
-				}
-				else {
-					return 	_matchNb->match(term);
-				}
-			}
-
-			if (term.className() == "variable"|| term.className() == "struct") {
-				if (_varMatched) {
-					_aVar->match(term);
-					return true;
-				}else{
-					_aVar = &term;
-					_value = term.symbol();
-					if (_nbMatched) {
-						term.match(*_matchNb);
-					}
-					_varMatched = true;
-					return _varMatched;
-				}
-			}
-
-
-			if (term.className() == "atom") {
-				if (!_atomAssing) {
-					if (_varMatched) {
-						_aVar->match(term);
-					}
-					_value = term.symbol();
-					_symbol = _value;
-					_atomAssing = true;
-					_varMatched = false;
-				}
-				else {
-					return false;
-				}
-			}
-			
-			if (term.className() == "List") {
-				if (!_listAssing) {
-					_list = &term;
-					_listAssing = true;
-					//_value = term.symbol();
-					_value = _list -> symbol();
-					return true;
-				}
-				return false;
-			}
-		}
-		_assignable = false;
-		return ret;
-	}
-
+  Variable(string s):Term(s), _inst(0){}
+  string value() const {
+    if (_inst)
+      return _inst->value();
+    else
+      return Term::value();
+  }
+  bool match( Term & term ){
+    if (this == &term)
+      return true;
+    if(!_inst){
+      _inst = &term ;
+      return true;
+    }
+    return _inst->match(term);
+  }
 private:
-	string _symbol;
-	string _value;
-	string _className = "variable";
-	bool _assignable = true;
-	bool _nbMatched = false;
-	bool _varMatched = false;
-	bool _atomAssing = false;
-	bool _listAssing = false;
-	Term * _matchNb;
-	Term * _aVar;
-	Term * _list;
+  Term * _inst;
 };
 
 #endif
