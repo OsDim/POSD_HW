@@ -122,16 +122,23 @@ private:
 class DFSIterator :public Iterator<Term*> {
 public:
   DFSIterator(Term *input): _index(0), _input(input) {
-    Iterator *it = input->createIterator();
+    Iterator *it = input->createIterator(); //exp:StructIterator(Struct *s): _index(0), _s(s) {}
     for(it->first();!it->isDone();it->next()){
       _content.push_back(it->currentItem());
     }
     delete it;
     for(int i=0;i<_content.size();i++){
       Iterator *it =_content[i]->createIterator();
+      vector <Term *> temp;
       for(it->first();!it->isDone();it->next()){
-        _content.push_back(it->currentItem());
-       }
+        temp.push_back(it->currentItem());
+      }
+      delete it;
+
+      for(int j=0;j<temp.size();j++){
+      	_content.insert(_content.begin() + i + j + 1, temp[j]);;
+      }
+
       delete it;
     }
   }
