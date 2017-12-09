@@ -2,6 +2,7 @@
 #define LIST_H
 
 #include "atom.h"
+//#include "term.h"
 #include <vector>
 #include <string>
 #include <typeinfo>
@@ -10,6 +11,7 @@ using std::vector;
 
 class Variable ;
 
+//class Iterator;
 class List : public Term {
 public:
   string symbol() const ;
@@ -24,6 +26,10 @@ public:
     return _elements[index];
   }
   int arity() const {return _elements.size();}
+
+  //Iterator<Term *> * createIterator(){};
+  //Iterator * createBFSIterator();
+
 private:
   vector<Term *> _elements;
 };

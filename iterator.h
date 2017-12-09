@@ -31,6 +31,7 @@ public:
 class StructIterator :public Iterator <Term*> {
 public:
   friend class Struct;
+  StructIterator(Struct *s): _index(0), _s(s) {}
   void first() {
     _index = 0;
   }
@@ -48,9 +49,34 @@ public:
   }
 
 private:
-  StructIterator(Struct *s): _index(0), _s(s) {}
+  
   int _index;
   Struct* _s;
+};
+
+class ListIterator :public Iterator <Term*>{
+public:
+	friend class List;
+	ListIterator(List *list): _index(0), _list(list) {}
+
+  void first() {
+    _index = 0;
+  }
+
+  Term* currentItem() const {
+    return _list->args(_index);
+  }
+
+  bool isDone() const {
+    return _index >= _list->arity();
+  }
+
+  void next() {
+    _index++;
+  }
+private:
+  int _index;
+  List* _list;
 };
 
 class BFSIterator :public Iterator<Term*> {
@@ -92,27 +118,4 @@ private:
   Term* _input;
 };
 
-class ListIterator :public Iterator <Term*>{
-public:
-  ListIterator(List *list): _index(0), _list(list) {}
-
-  void first() {
-    _index = 0;
-  }
-
-  Term* currentItem() const {
-    return _list->args(_index);
-  }
-
-  bool isDone() const {
-    return _index >= _list->arity();
-  }
-
-  void next() {
-    _index++;
-  }
-private:
-  int _index;
-  List* _list;
-};
 #endif
