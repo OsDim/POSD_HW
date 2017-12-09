@@ -12,20 +12,35 @@ class Variable ;
 
 class List : public Term {
 public:
-  string symbol() const ;
-  string value() const ;
-  bool match(Term & term) ;
-public:
   List (): _elements(0) {}
   List (vector<Term *> const & elements):_elements(elements){}
+
+  string symbol() const ;
+
+  string value() const ;
+
+  string getClassName() const ;
+
+  bool match(Term & term) ;
+
   Term * head() const;
   List * tail() const;
+
   Term * args(int index) {
     return _elements[index];
   }
-  int arity() const {return _elements.size();}
+
+  int arity() {return _elements.size();}
+
+  Iterator * createIterator();
+  Iterator * createBFSIterator();
+  Iterator * createDFSIterator();
+
+  bool isAssignable(){return true;}
+
 private:
   vector<Term *> _elements;
+  string const _className = "LIST_H";
 };
 
 #endif

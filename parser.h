@@ -13,6 +13,7 @@ using std::stack;
 #include "list.h"
 #include "node.h"
 #include "utParser.h"
+#include "number.h"
 
 class Parser{
 public:

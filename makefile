@@ -1,37 +1,59 @@
-all: madRace utAtom utVariable hw6
+all: hw7 #utAtom #utVariable  
 
-
-hw6: mainScanner.o atom.o list.o scanner.h utScanner.h utParser.h parser.h
+hw7: main.o iterator.o
 ifeq (${OS}, Windows_NT)
-	g++ -o hw6 mainScanner.o atom.o list.o -lgtest
+	g++ -o hw7 main.o iterator.o -lgtest
 else
-	g++ -o hw6 mainScanner.o atom.o list.o -lgtest -lpthread
+	g++ -o hw7 main.o iterator.o -lgtest -pthread
 endif
 
-mainAtom.o: mainAtom.cpp utAtom.h atom.h utStruct.h struct.h
-	g++ -std=gnu++0x -c mainAtom.cpp
+main.o: main.cpp atom.h variable.h number.h term.h struct.h utVariable.h utStruct.h utList.h list.h global.h scanner.h parser.h utParser.h node.h utIterator.h iterator.h
+	g++ --std=gnu++0x -c main.cpp
 
-atom.o: atom.cpp atom.h variable.h
-	g++ -std=gnu++0x -c atom.cpp
+iterator.o: iterator.cpp term.h struct.h list.h iterator.h
+	g++ --std=gnu++0x -c iterator.cpp
 
+utAtom: mainAtom.o
+ifeq (${OS}, Windows_NT)
+	g++ -o utAtom mainAtom.o -lgtest
+else
+	g++ -o utAtom mainAtom.o -lgtest -pthread
+endif
+mainAtom.o: mainAtom.cpp utAtom.h atom.h
+	g++ --std=gnu++0x -c mainAtom.cpp
 
+utVariable: mainVariable.o
+ifeq (${OS}, Windows_NT)
+	g++ -o utVariable mainVariable.o -lgtest
+else
+	g++ -o utVariable mainVariable.o -lgtest -pthread
+endif	
 mainVariable.o: mainVariable.cpp utVariable.h variable.h
-		g++ -std=gnu++0x -c mainVariable.cpp
-list.o:list.cpp list.h
-		g++ -std=gnu++0x -c list.cpp
+		g++ --std=gnu++0x -c mainVariable.cpp
 
+#exp: mainExp.o
+#	g++ -o exp mainExp.o -lgtest -lpthread
+#mainExp.o: mainExp.cpp exp.h global.h
+#	g++ -std=c++11 -c mainExp.cpp
 
-mainScanner.o: mainScanner.cpp utScanner.h scanner.h  atom.h struct.h variable.h  utParser.h parser.h
-		g++ -std=gnu++0x -c mainScanner.cpp
-utIterator: mainIterator.o atom.o list.o iterator.h
-	g++ -o utIterator mainIterator.o atom.o list.o struct.h -lgtest -lpthread
+#utScannerParser: mainScannerParser.o term.o struct.o var.o list.o
+#	g++ -o utScannerParser mainScannerParser.o term.o var.o struct.o list.o -lgtest -lpthread
+#mainScannerParser.o: mainScannerParser.cpp utScanner.h utParser.h scanner.h parser.h term.h var.h struct.h list.h global.h node.h
+#		g++ -std=c++11 -c mainScannerParser.cpp
 
-mainIterator.o: mainIterator.cpp utIterator.h
-	g++ -std=gnu++0x -c mainIterator.cpp
-
-
-
+#utTerm: mainTerm.o term.o struct.o var.o list.o
+#	g++ -o utTerm mainTerm.o term.o var.o struct.o list.o -lgtest -lpthread
+#mainTerm.o: mainTerm.cpp utTerm.h term.h var.h utStruct.h struct.h list.h utList.h
+#	g++ -std=c++11 -c mainTerm.cpp
+#term.o: term.h term.cpp
+#	g++ -std=c++11 -c term.cpp
+#struct.o: struct.h struct.cpp
+#	g++ -std=c++11 -c struct.cpp
+#var.o: var.h var.cpp
+#g++ -std=c++11 -c var.cpp
+#list.o: list.h list.cpp term.h var.h
+#	g++ -std=c++11 -c list.cpp
 clean:
-	rm -f *.o madRace utAtom utVariable utScanner
+	rm -f *.o hw7 #utAtom #utVariable 
 stat:
 	wc *.h *.cpp
