@@ -15,6 +15,9 @@ public:
   virtual bool match(Term & a);
   
   virtual Iterator<Term *> * createIterator();
+  virtual Iterator<Term *> * createBFSIterator();
+  virtual Iterator<Term *> * createDFSIterator();
+
 protected:
   Term ():_symbol(""){}
   Term (string s):_symbol(s) {}

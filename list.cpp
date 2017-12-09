@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include "list.h"
-//#include "iterator.h"
+#include "iterator.h"
 using std::vector;
 
 string List::symbol() const{
@@ -91,6 +91,20 @@ List * List::tail() const {
     return ls;
 }
 
-// Iterator<Term*> * List::createIterator(){
-//   return new ListIterator(this);
+Iterator<Term*> * List::createIterator(){
+  return new ListIterator(this);
+}
+
+Iterator<Term*> * List::createBFSIterator()
+{
+  return new BFSIterator(this);
+}
+
+Iterator<Term*> * List::createDFSIterator()
+{
+  return new DFSIterator(this);
+}
+// Iterator<Term*> * Struct::createIterator()
+// {
+//   return new StructIterator(this);
 // }

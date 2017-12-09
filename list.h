@@ -20,15 +20,17 @@ public:
 public:
   List (): _elements(0) {}
   List (vector<Term *> const & elements):_elements(elements){}
+
+  Iterator<Term *> * createIterator();
+  Iterator<Term *> * createBFSIterator();
+  Iterator<Term *> * createDFSIterator();
+
   Term * head() const;
   List * tail() const;
   Term * args(int index) {
     return _elements[index];
   }
   int arity() const {return _elements.size();}
-
-  //Iterator<Term *> * createIterator(){};
-  //Iterator * createBFSIterator();
 
 private:
   vector<Term *> _elements;

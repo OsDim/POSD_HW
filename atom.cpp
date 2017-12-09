@@ -7,6 +7,13 @@
 Iterator<Term*> * Term::createIterator(){
   return new NullIterator(this);
 }
+Iterator<Term*> * Term::createBFSIterator(){
+  return new NullIterator(this);
+}
+Iterator<Term*> * Term::createDFSIterator(){
+  return new NullIterator(this);
+}
+
 
 bool Term::match(Term & a){
   if (typeid(a) ==  typeid(Variable))
