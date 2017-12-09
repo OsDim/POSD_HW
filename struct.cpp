@@ -8,5 +8,11 @@ Iterator<Term*> * Struct::createIterator()
 
 Iterator<Term*> * Struct::createBFSIterator()
 {
-  return new StructIterator(this);
+  return new BFSIterator(this);
 }
+
+Iterator<Term*> * Struct::createDFSIterator()
+{
+  return new DFSIterator(this);
+}
+
