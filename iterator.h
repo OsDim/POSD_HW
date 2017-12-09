@@ -46,10 +46,50 @@ public:
   void next() {
     _index++;
   }
+
 private:
   StructIterator(Struct *s): _index(0), _s(s) {}
   int _index;
   Struct* _s;
+};
+
+class BFSIterator :public Iterator<Term*> {
+public:
+  BFSIterator(Term *input): _index(0), _input(input) {
+    Iterator *it = input->createIterator();
+    for(it->first();!it->isDone();it->next()){
+      _content.push_back(it->currentItem());
+    }
+    delete it;
+    for(int i=0;i<_content.size();i++){
+      Iterator *it =_content[i]->createIterator();
+      for(it->first();!it->isDone();it->next()){
+        _content.push_back(it->currentItem());
+       }
+      delete it;
+    }
+  }
+
+  void first() {
+    _index = 0;
+  }
+
+  Term* currentItem() const {
+    return _content[_index];
+  }
+
+  bool isDone() const {
+    return _index >= _content.size()-1;
+  }
+
+  void next() {
+    _index++;
+  }
+
+private:
+  int _index;
+  vector <Term *> _content;
+  Term* _input;
 };
 
 class ListIterator :public Iterator <Term*>{
