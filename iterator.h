@@ -4,15 +4,17 @@
 #include "struct.h"
 #include "list.h"
 
+template <class T>
 class Iterator {
 public:
   virtual void first() = 0;
   virtual void next() = 0;
-  virtual Term* currentItem() const = 0;
+  virtual T currentItem() const = 0;
   virtual bool isDone() const = 0;
 };
 
-class NullIterator :public Iterator{
+
+class NullIterator :public Iterator <Term*>{
 public:
   NullIterator(Term *n){}
   void first(){}
@@ -26,7 +28,7 @@ public:
 
 };
 
-class StructIterator :public Iterator {
+class StructIterator :public Iterator <Term*> {
 public:
   friend class Struct;
   void first() {
@@ -50,7 +52,7 @@ private:
   Struct* _s;
 };
 
-class ListIterator :public Iterator {
+class ListIterator :public Iterator <Term*>{
 public:
   ListIterator(List *list): _index(0), _list(list) {}
 

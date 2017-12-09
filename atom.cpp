@@ -3,7 +3,8 @@
 #include "iterator.h"
 #include <typeinfo>
 
-Iterator * Term::createIterator(){
+//template<class T>
+Iterator<Term*> * Term::createIterator(){
   return new NullIterator(this);
 }
 
