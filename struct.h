@@ -6,12 +6,10 @@
 #include <string>
 
 using std::string;
-using std::vector;
 
-class Iterator;
 class Struct: public Term {
 public:
-  Struct(Atom name, vector<Term *> args): _name(name) {
+  Struct(Atom name, std::vector<Term *> args): _name(name) {
     _args = args;
   }
 
@@ -22,7 +20,6 @@ public:
   Atom & name() {
     return _name;
   }
-
   string symbol() const {
     if(_args.empty())
     return  _name.symbol() + "()";
@@ -42,19 +39,11 @@ public:
     ret  += (*it)->value()+")";
     return ret;
   }
-
-  string getClassName() const {
-    return _className;
-  }
   int arity() const {return _args.size();}
-
   Iterator * createIterator();
-  Iterator * createBFSIterator();
-  Iterator * createDFSIterator();
 private:
   Atom _name;
   std::vector<Term *> _args;
-  string const _className = "Struct";
 };
 
 #endif

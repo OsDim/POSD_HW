@@ -4,29 +4,7 @@
 #include <iostream>
 #include <string>
 #include "list.h"
-#include "iterator.h"
-
 using std::vector;
-
-
-Iterator * List::createIterator()
-{
-  return new ListIterator(this);
-}
-
-Iterator * List::createBFSIterator()
-{
-  return new ListIterator(this);
-}
-
-Iterator * List::createDFSIterator()
-{
-  return new ListIterator(this);
-}
-
-string List::getClassName() const{
-    return _className;
-}
 
 string List::symbol() const{
     string ret ;

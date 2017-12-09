@@ -3,31 +3,34 @@
 
 #include <string>
 #include <sstream>
-#include "term.h"
 using std::string;
 
-
-class Atom:public Term{
-public:Atom (string s):_symbol(s), _value(s), _className("Atom"){}
-  string value()const{ return _value; }
-  string symbol()const{return _symbol;}
-  string getClassName()const{return _className;}
-  bool match( Term &term ){ 
-    if(term.getClassName()=="Variable")
-    {
-       return term.match(*this); 
-    }
-    else
-    {
-      return _value == term.value();
-    }
-
+class Iterator;
+class Term{
+public:
+  virtual string symbol() const {return _symbol;}
+  virtual string value() const {return symbol();}
+  virtual bool match(Term & a);
+  virtual Iterator * createIterator();
+protected:
+  Term ():_symbol(""){}
+  Term (string s):_symbol(s) {}
+  Term(double db){
+    std::ostringstream strs;
+    strs << db;
+    _symbol = strs.str();
   }
- private:
-  string const _symbol;
-  string _value;
-  string const _className;
+  string _symbol;
+};
 
+class Atom : public Term{
+public:
+  Atom(string s):Term(s) {}
+};
+
+class Number : public Term{
+public:
+  Number(double db):Term(db) {}
 };
 
 #endif
